@@ -1,3 +1,5 @@
+修复了REDBetter-crawler的错误文件夹名称的bug，如果使用原REDBetter-crawler对24bits FLAC文件进行转码操作，很大概率会导致生成的FLAC文件夹和MP3文件夹出现[16-44]之类的迷之tag，这里直接去除了输出[16-44] tag的功能，并且统一将参数改为[WEB - 格式 - 编码] 比如[WEB - MP3 - V0]，这样就符合RED上传规范，不会再导致文件夹名称错误而被管理员撤销用户上传种子权限的问题。
+
 ## Introduction
 
 >* **Do not abuse automated site access.**

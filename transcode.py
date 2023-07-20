@@ -234,17 +234,20 @@ def get_transcode_dir(flac_dir, output_dir, output_format, resample):
 
 
     format_dict = {
-        'FLAC': '[WEB - FLAC - Lossless]',
-        '320': '[WEB - MP3 - 320]',
-        'V0': '[WEB - MP3 - V0]'
+        'FLAC': '[FLAC - Lossless]',
+        '320': '[MP3 - 320]',
+        'V0': '[MP3 - V0]'
     }
 
 
     output_format = format_dict.get(output_format, output_format)
 
-    match = re.match(r'(.+? - .+? \(\d{4}\))', transcode_dir)
+    match = re.match(r'(.+?)-(.+?)-.+-(\d{4})', transcode_dir)
     if match:
-        transcode_dir = match.group(1)
+        artist = match.group(1)
+        title = match.group(2)
+        year = match.group(3)
+        transcode_dir = "{}-{} ({})".format(artist, title, year)
 
 
     transcode_dir = transcode_dir + " " + output_format

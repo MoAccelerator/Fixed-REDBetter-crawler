@@ -232,20 +232,22 @@ def transcode(flac_file, output_dir, output_format):
 def get_transcode_dir(flac_dir, output_dir, output_format, resample):
     transcode_dir = os.path.basename(flac_dir)
 
+    format_dict = {
+        'FLAC': '[WEB - FLAC - Lossless]',
+        '320': '[WEB - MP3 - 320]',
+        'V0': '[WEB - MP3 - V0]'
+    }
+
+    output_format = format_dict.get(output_format, output_format)
+    
+    transcode_dir = re.sub(r'\s*\d{2}-\d{2}\s*', ' ', transcode_dir)
+
     if 'FLAC' in flac_dir.upper():
         transcode_dir = re.sub(re.compile('FLAC', re.I), output_format, transcode_dir)
     else:
         transcode_dir = transcode_dir + " (" + output_format + ")"
         if output_format != 'FLAC':
             transcode_dir = re.sub(re.compile('FLAC', re.I), '', transcode_dir)
-    if resample:
-        if '24' in flac_dir and '96' in flac_dir:
-            # XXX: theoretically, this could replace part of the album title too.
-            # e.g. "24 days in 96 castles - [24-96]" would become "16 days in 44 castles - [16-44]"
-            transcode_dir = transcode_dir.replace('24', '16')
-            transcode_dir = transcode_dir.replace('96', '48')
-        else:
-            transcode_dir += " [16-44]"
 
     return os.path.join(output_dir, transcode_dir)
 

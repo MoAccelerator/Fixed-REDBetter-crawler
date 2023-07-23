@@ -246,11 +246,13 @@ def get_transcode_dir(flac_dir, output_dir, output_format, resample):
     if not match:
         match = re.match(r'(.+?)-(.+?)\s*\[.*\]\s*\[.*\]', transcode_dir)
     if not match:
+        match = re.match(r'(.+?)\s*(\[\d{4}\])?\s*\[.*\]\s*\[.*\]', transcode_dir)
+    if not match:
         match = re.match(r'(.+?)\s*\[.*\]\s*\[.*\]', transcode_dir)
     if match:
-        artist = match.group(1) if len(match.groups()) > 1 else ""
-        title = match.group(2) if len(match.groups()) > 1 else match.group(1)
-        year = match.group(3) if len(match.groups()) > 2 else ""
+        artist = match.group(1) if len(match.groups()) > 2 else ""
+        title = match.group(2) if len(match.groups()) > 2 else match.group(1)
+        year = match.group(3) if len(match.groups()) > 2 else (match.group(2) if len(match.groups()) > 1 else "")
         if artist:
             transcode_dir = "{}-{} {}".format(artist, title, year).strip()
         else:

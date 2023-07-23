@@ -242,12 +242,13 @@ def get_transcode_dir(flac_dir, output_dir, output_format, resample):
 
     output_format = format_dict.get(output_format, output_format)
 
-    match = re.match(r'(.+?)-(.+?)\s*(\[\d{4}\])?\s*\[.*\]', transcode_dir)
+    match = re.match(r'(.+?)-(.+?)\s*(\[\d{4}\])?\s*\[.*-.*\]\s*\[.*\]', transcode_dir)
     if match:
         artist = match.group(1)
         title = match.group(2)
         year = match.group(3) if match.group(3) else ""
         transcode_dir = "{}-{} {}".format(artist, title, year).strip()
+
 
 
 

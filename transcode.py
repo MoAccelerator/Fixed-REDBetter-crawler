@@ -242,25 +242,21 @@ def get_transcode_dir(flac_dir, output_dir, output_format, resample):
 
     output_format = format_dict.get(output_format, output_format)
 
-    match = re.match(r'(.+?)-(.+?)\s*(\[\d{4}\])?\s*\[.*\]\s*\[.*\]', transcode_dir)
-    if not match:
-        match = re.match(r'(.+?)-(.+?)\s*\[.*\]\s*\[.*\]', transcode_dir)
-    if not match:
-        match = re.match(r'(.+?)\s*(\[\d{4}\])?\s*\[.*\]\s*\[.*\]', transcode_dir)
-    if not match:
-        match = re.match(r'(.+?)\s*\[.*\]\s*\[.*\]', transcode_dir)
+    match = re.match(r'(.+?)-(.+?)\s*(\(\d{4}\))', transcode_dir)
     if match:
-        artist = match.group(1) if len(match.groups()) > 2 else ""
-        title = match.group(2) if len(match.groups()) > 2 else match.group(1)
-        year = match.group(3) if len(match.groups()) > 2 else (match.group(2) if len(match.groups()) > 1 else "")
-        if artist:
-            transcode_dir = "{}-{} {}".format(artist, title, year).strip()
-        else:
-            transcode_dir = "{} {}".format(title, year).strip()
+        artist = match.group(1)
+        title = match.group(2)
+        year = match.group(3) if match.group(3) else ""
+        transcode_dir = "{}-{} {}".format(artist, title, year).strip()
+
+        
+    transcode_dir = re.sub(r'\{.*\}\[.*\]|FLAC|EP|WEB|\[\d{2}.\d{1,3}.*\]|[-()\[\]{}]*\d{2}.\d{1,3}.*\w{1,7}[-()\[\]{}]*', '', transcode_dir)
+
 
 
 
     transcode_dir = transcode_dir + " " + output_format
+
 
     return os.path.join(output_dir, transcode_dir)
 
